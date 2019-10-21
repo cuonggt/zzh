@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+
+use Cuonggt\Zzh\Commands;
+use Illuminate\Container\Container;
+use Symfony\Component\Console\Application;
+
+if (file_exists(__DIR__.'/../../autoload.php')) {
+    require __DIR__.'/../../autoload.php';
+} else {
+    require __DIR__.'/vendor/autoload.php';
+}
+
+/**
+ * Create the container instance.
+ */
+Container::setInstance($container = new Container);
+
+/**
+ * Start the console application.
+ */
+$app = new Application('Zzh', '0.1.0');
+
+// Connects...
+$app->add(new Commands\ConnectCommand);
+
+// Hosts...
+$app->add(new Commands\HostListCommand);
+$app->add(new Commands\HostAddCommand);
+$app->add(new Commands\HostDeleteCommand);
+$app->add(new Commands\HostConnectCommand);
+$app->add(new Commands\HostExportCommand);
+
+// Tests...
+$app->add(new Commands\TestCommand);
+
+$app->run();

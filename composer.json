@@ -1,0 +1,43 @@
+{
+    "name": "cuonggt/zzh",
+    "description": "SSH Client and connection manager in your favorite terminal",
+    "keywords": [
+        "ssh client",
+        "connection manager"
+    ],
+    "homepage": "https://github.com/cuonggt/zzh",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cuong Giang",
+            "email": "thaicuong.giang@gmail.com"
+        }
+    ],
+    "bin": [
+        "zzh"
+    ],
+    "require": {
+        "illuminate/container": "^5.8",
+        "symfony/console": "^4.3",
+        "symfony/process": "^4.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cuonggt\\Zzh\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cuonggt\\Zzh\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
