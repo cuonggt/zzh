@@ -1,4 +1,4 @@
-# Zzh
+# zzh
 
 - Have too many server credentials to remember
 - Feel hard to use SSH config file
@@ -44,3 +44,7 @@ To view all of the available `zzh` commands, you may use the `list` command:
 ### Export to SSH config file
 
     zzh host:export
+
+## License
+
+`zzh` is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
