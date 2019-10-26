@@ -25,18 +25,10 @@ To view all of the available `zzh` commands, you may use the `list` command:
 
 ## Managing Connections
 
-### List the hosts
-
-    zzh host:list
-
 ### Add a new host
 
     zzh host:add <host>
-
-### Delete a host
-
-    zzh host:delete <host>
-
+    
 ### Connect to a host
 
     zzh host:connect <host>
@@ -44,6 +36,18 @@ To view all of the available `zzh` commands, you may use the `list` command:
 ### Export to SSH config file
 
     zzh host:export
+    
+### List the hosts
+
+    zzh host:list
+    
+### Edit a host
+    
+    zzh host:edit <host>
+
+### Delete a host
+
+    zzh host:delete <host>
 
 ## License
 
