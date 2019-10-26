@@ -27,6 +27,7 @@ $app->add(new Commands\ConnectCommand);
 // Hosts...
 $app->add(new Commands\HostListCommand);
 $app->add(new Commands\HostAddCommand);
+$app->add(new Commands\HostEditCommand);
 $app->add(new Commands\HostDeleteCommand);
 $app->add(new Commands\HostConnectCommand);
 $app->add(new Commands\HostExportCommand);

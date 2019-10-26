@@ -62,7 +62,7 @@ class Host
         $fp = fopen(Helpers::hostFilePath($this->name), 'w');
 
         foreach ($this->allowEntries as $entry) {
-            fwrite($fp, $entry.' = "'.$this->{$entry}.PHP_EOL.'"');
+            fwrite($fp, $entry.'="'.$this->{$entry}.'"'.PHP_EOL);
         }
 
         fclose($fp);
