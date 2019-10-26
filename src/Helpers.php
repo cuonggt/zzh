@@ -239,7 +239,7 @@ class Helpers
      */
     public static function defaultIdentityFile()
     {
-        return static::home().'/.ssh/id_rsa.pub';
+        return '~/.ssh/id_rsa.pub';
     }
 
     /**

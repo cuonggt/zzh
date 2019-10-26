@@ -37,7 +37,7 @@ class Host
         return $this;
     }
 
-    public static function readFromConfigFile($name)
+    public static function loadFromConfigFile($name)
     {
         $host = new static($name);
 
@@ -55,14 +55,14 @@ class Host
         ]);
     }
 
-    public function writeToConfigFile()
+    public function saveToConfigFile()
     {
         Helpers::ensureHostsDirectoryExists();
 
         $fp = fopen(Helpers::hostFilePath($this->name), 'w');
 
         foreach ($this->allowEntries as $entry) {
-            fwrite($fp, $entry.'='.$this->{$entry}.PHP_EOL);
+            fwrite($fp, $entry.' = "'.$this->{$entry}.PHP_EOL.'"');
         }
 
         fclose($fp);
@@ -91,7 +91,7 @@ class Host
     public static function all()
     {
         return collect(glob(Helpers::hostsPath().'/*'))->map(function ($filename) {
-            return static::readFromConfigFile(basename($filename));
+            return static::loadFromConfigFile(basename($filename));
         });
     }
 }

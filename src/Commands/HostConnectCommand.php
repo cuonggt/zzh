@@ -33,7 +33,7 @@ class HostConnectCommand extends Command
             Helpers::abort('You need a TTY supported terminal to connect to a host.');
         }
 
-        $host = Host::readFromConfigFile($this->argument('host'));
+        $host = Host::loadFromConfigFile($this->argument('host'));
 
         if (! $host) {
             Helpers::abort('Unable to find a host with that name.');

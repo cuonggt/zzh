@@ -39,7 +39,7 @@ class HostAddCommand extends Command
             'user' => Helpers::ask('User', Helpers::defaultSSHUser()),
             'port' => Helpers::ask('Port', Helpers::defaultSSHPort()),
             'identityfile' => Helpers::ask('Identity File', Helpers::defaultIdentityFile()),
-        ])->writeToConfigFile();
+        ])->saveToConfigFile();
 
         Helpers::info('Host added successfully.');
     }
