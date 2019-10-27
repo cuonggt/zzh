@@ -31,7 +31,7 @@ class Host
     /**
      * Determine if a host config file exists.
      *
-     * @return boolean
+     * @return bool
      */
     public function exists()
     {
