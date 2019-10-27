@@ -2,7 +2,6 @@
 
 namespace Cuonggt\Zzh;
 
-use Cuonggt\Zzh\KeyChoiceQuestion;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -218,7 +217,7 @@ class Helpers
      * Determine if a host config file exists.
      *
      * @param  string  $name
-     * @return boolean
+     * @return bool
      */
     public static function hostFileExists($name)
     {
@@ -262,7 +261,7 @@ class Helpers
     /**
      * Get the default SSH port.
      *
-     * @return integer
+     * @return int
      */
     public static function defaultSSHPort()
     {

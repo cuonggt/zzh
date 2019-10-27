@@ -4,7 +4,6 @@ namespace Cuonggt\Zzh\Commands;
 
 use Cuonggt\Zzh\Helpers;
 use Cuonggt\Zzh\Models\Host;
-use Symfony\Component\Process\Process;
 
 class HostListCommand extends Command
 {
