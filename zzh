@@ -32,7 +32,4 @@ $app->add(new Commands\HostDeleteCommand);
 $app->add(new Commands\HostConnectCommand);
 $app->add(new Commands\HostExportCommand);
 
-// Tests...
-$app->add(new Commands\TestCommand);
-
 $app->run();
