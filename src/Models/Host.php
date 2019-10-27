@@ -6,15 +6,33 @@ use Cuonggt\Zzh\Helpers;
 
 class Host
 {
+    /**
+     * The host name.
+     *
+     * @var string
+     */
     public $name;
 
+    /**
+     * The host's allow entries.
+     *
+     * @var array
+     */
     public $allowEntries = ['host', 'user', 'port', 'identityfile'];
 
+    /**
+     * @param string $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * Determine if a host config file exists.
+     *
+     * @return boolean
+     */
     public function exists()
     {
         return file_exists(Helpers::hostFilePath($this->name));
@@ -37,6 +55,12 @@ class Host
         return $this;
     }
 
+    /**
+     * Load host from a config file.
+     *
+     * @param  string  $name
+     * @return $this
+     */
     public static function loadFromConfigFile($name)
     {
         $host = new static($name);
@@ -55,6 +79,11 @@ class Host
         ]);
     }
 
+    /**
+     * Save the host to a config file.
+     *
+     * @return void
+     */
     public function saveToConfigFile()
     {
         Helpers::ensureHostsDirectoryExists();
@@ -68,11 +97,21 @@ class Host
         fclose($fp);
     }
 
+    /**
+     * Delete the host.
+     *
+     * @return void
+     */
     public function delete()
     {
         @unlink(Helpers::hostFilePath($this->name));
     }
 
+    /**
+     * Genrate the SSH connect command.
+     *
+     * @return string
+     */
     public function connectCommand()
     {
         $command = 'ssh';
@@ -88,6 +127,11 @@ class Host
         return $command.' '.$this->user.'@'.$this->host;
     }
 
+    /**
+     * Get all of the hosts.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public static function all()
     {
         return collect(glob(Helpers::hostsPath().'/*'))->map(function ($filename) {

@@ -19,7 +19,7 @@ Container::setInstance($container = new Container);
 /**
  * Start the console application.
  */
-$app = new Application('Zzh', '0.1.0');
+$app = new Application('Zzh', '1.0.1');
 
 // Connects...
 $app->add(new Commands\ConnectCommand);

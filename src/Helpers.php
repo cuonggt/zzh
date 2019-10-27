@@ -206,6 +206,7 @@ class Helpers
     /**
      * Get the host file path.
      *
+     * @param  string  $name
      * @return string
      */
     public static function hostFilePath($name)
@@ -214,8 +215,9 @@ class Helpers
     }
 
     /**
-     * Check the host file exists or not.
+     * Determine if a host config file exists.
      *
+     * @param  string  $name
      * @return boolean
      */
     public static function hostFileExists($name)
@@ -223,6 +225,11 @@ class Helpers
         return file_exists(static::hostFilePath($name));
     }
 
+    /**
+     * Ensure the hosts directory exists.
+     *
+     * @return void
+     */
     public static function ensureHostsDirectoryExists()
     {
         $hostsPath = static::hostsPath();
