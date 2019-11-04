@@ -2,7 +2,7 @@
 
 - Have too many server credentials to remember
 - Feel hard to use SSH config file
-- Wanna easier to connect to your servers using your favorite terminal
+- Wanna connect to your servers easier using your favorite terminal
 
 Don't worry, `zzh` is for you!
 
