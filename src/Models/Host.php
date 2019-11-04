@@ -6,6 +6,14 @@ use Cuonggt\Zzh\Helpers;
 
 class Host
 {
+    const DEFAULT_SSH_PORT = 22;
+
+    const DEFAULT_IDENTITY_FILE = '~/.ssh/id_rsa.pub';
+
+    const DEFAULT_SERVER_ALIVE_INTERVAL = 60;
+
+    const DEFAULT_SERVER_ALIVE_COUNT_MAX = 10;
+
     /**
      * The host name.
      *
@@ -18,7 +26,25 @@ class Host
      *
      * @var array
      */
-    public $allowEntries = ['host', 'user', 'port', 'identityfile'];
+    public $allowEntries = [
+        'host',
+        'user',
+        'port',
+        'identityfile',
+        'ProxyCommand',
+        'LocalForward',
+        'Protocol',
+        'ServerAliveInterval',
+        'ServerAliveCountMax',
+    ];
+
+    public $advancedEntries = [
+        'ProxyCommand',
+        'LocalForward',
+        'Protocol',
+        'ServerAliveInterval',
+        'ServerAliveCountMax',
+    ];
 
     /**
      * @param string $name
@@ -74,8 +100,13 @@ class Host
         return $host->map([
             'host' => $config['host'] ?? $host->name,
             'user' => $config['user'] ?? Helpers::defaultSSHUser(),
-            'port' => $config['port'] ?? Helpers::defaultSSHPort(),
-            'identityfile' => $config['identityfile'] ?? Helpers::defaultIdentityFile(),
+            'port' => $config['port'] ?? self::DEFAULT_SSH_PORT,
+            'identityfile' => $config['identityfile'] ?? self::DEFAULT_IDENTITY_FILE,
+            'ProxyCommand' => isset($config['ProxyCommand']) ? $config['ProxyCommand'] : false,
+            'LocalForward' => isset($config['LocalForward']) ? $config['LocalForward'] : false,
+            'Protocol' => isset($config['Protocol']) ? $config['Protocol'] : false,
+            'ServerAliveInterval' => isset($config['ServerAliveInterval']) ? $config['ServerAliveInterval'] : false,
+            'ServerAliveCountMax' => isset($config['ServerAliveCountMax']) ? $config['ServerAliveCountMax'] : false,
         ]);
     }
 
@@ -91,7 +122,9 @@ class Host
         $fp = fopen(Helpers::hostFilePath($this->name), 'w');
 
         foreach ($this->allowEntries as $entry) {
-            fwrite($fp, $entry.'="'.$this->{$entry}.'"'.PHP_EOL);
+            if (property_exists($this, $entry)) {
+                fwrite($fp, $entry . '="' . $this->{$entry} . '"' . PHP_EOL);
+            }
         }
 
         fclose($fp);

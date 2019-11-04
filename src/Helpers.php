@@ -117,15 +117,16 @@ class Helpers
     /**
      * Ask the user to select from the given choices.
      *
-     * @param  string  $question
+     * @param  string  $title
+     * @param  array  $choices
      * @param  mixed  $default
      * @return mixed
      */
-    public static function menu($title, $choices)
+    public static function menu($title, $choices, $default = null)
     {
         $style = new SymfonyStyle(static::app('input'), static::app('output'));
 
-        return $style->askQuestion(new KeyChoiceQuestion($title, $choices));
+        return $style->askQuestion(new KeyChoiceQuestion($title, $choices, $default));
     }
 
     /**
@@ -239,16 +240,6 @@ class Helpers
     }
 
     /**
-     * Get the default identity file path.
-     *
-     * @return string
-     */
-    public static function defaultIdentityFile()
-    {
-        return '~/.ssh/id_rsa.pub';
-    }
-
-    /**
      * Get the default SSH user.
      *
      * @return string
@@ -256,15 +247,5 @@ class Helpers
     public static function defaultSSHUser()
     {
         return get_current_user();
-    }
-
-    /**
-     * Get the default SSH port.
-     *
-     * @return int
-     */
-    public static function defaultSSHPort()
-    {
-        return 22;
     }
 }

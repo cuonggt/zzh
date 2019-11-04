@@ -58,6 +58,12 @@ class HostExportCommand extends Command
             fwrite($fp, '  User '.$host->user.PHP_EOL);
             fwrite($fp, '  Port '.$host->port.PHP_EOL);
             fwrite($fp, '  IdentityFile '.$host->identityfile.PHP_EOL);
+
+            foreach ($host->advancedEntries as $advancedEntry) {
+                if (! empty($host->{$advancedEntry})) {
+                    fwrite($fp, '  '.$advancedEntry.' '.$host->{$advancedEntry}.PHP_EOL);
+                }
+            }
         });
 
         fclose($fp);

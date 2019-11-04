@@ -96,10 +96,11 @@ class Command extends SymfonyCommand
      *
      * @param  string  $title
      * @param  array  $choices
+     * @param  mixed  $default
      * @return mixed
      */
-    public function menu($title, $choices)
+    public function menu($title, $choices, $default = null)
     {
-        return Helpers::menu($title, $choices);
+        return Helpers::menu($title, $choices, $default);
     }
 }
