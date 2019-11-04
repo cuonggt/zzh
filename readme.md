@@ -2,7 +2,7 @@
 
 - Have too many server credentials to remember
 - Feel hard to use SSH config file
-- Wanna easier to connect to your servers using your favorite terminal
+- Wanna connect easier to your servers using your favorite terminal
 
 Don't worry, `zzh` is for you!
 
@@ -28,7 +28,11 @@ To view all of the available `zzh` commands, you may use the `list` command:
 ### Add a new host
 
     zzh host:add <host>
-    
+
+If you want to add advanced SSH entries like `ProxyCommand`, `LocalForward`, etc, use option `--advanced`:
+
+    zzh host:add <host> --advanced
+
 ### Connect to a host
 
     zzh host:connect <host>
@@ -36,13 +40,13 @@ To view all of the available `zzh` commands, you may use the `list` command:
 ### Export to SSH config file
 
     zzh host:export
-    
+
 ### List the hosts
 
-    zzh host:list
-    
+    zzh host:list    
+
 ### Edit a host
-    
+
     zzh host:edit <host>
 
 ### Delete a host
