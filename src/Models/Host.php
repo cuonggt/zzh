@@ -123,7 +123,7 @@ class Host
 
         foreach ($this->allowEntries as $entry) {
             if (property_exists($this, $entry)) {
-                fwrite($fp, $entry . '="' . $this->{$entry} . '"' . PHP_EOL);
+                fwrite($fp, $entry.'="'.$this->{$entry}.'"'.PHP_EOL);
             }
         }
 
