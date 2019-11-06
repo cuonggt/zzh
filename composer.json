@@ -17,7 +17,7 @@
         "zzh"
     ],
     "require": {
-        "illuminate/container": "^5.8",
+        "illuminate/container": "^5.8|^6.0",
         "symfony/console": "^4.3",
         "symfony/process": "^4.3"
     },
