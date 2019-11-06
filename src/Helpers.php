@@ -263,7 +263,7 @@ class Helpers
             'LocalForward',
             'Protocol',
             'ServerAliveInterval',
-            'ServerAliveCountMax'
+            'ServerAliveCountMax',
         ];
     }
 }
