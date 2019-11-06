@@ -68,8 +68,7 @@ class Host
         $port,
         $identityfile,
         $advancedEntries = []
-    )
-    {
+    ) {
         $this->name = $name;
         $this->host = $host;
         $this->user = $user;

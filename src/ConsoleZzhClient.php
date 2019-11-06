@@ -2,7 +2,6 @@
 
 namespace Cuonggt\Zzh;
 
-use Cuonggt\Zzh\Helpers;
 use Cuonggt\Zzh\Models\Host;
 use Symfony\Component\Process\Process;
 
@@ -26,8 +25,7 @@ class ConsoleZzhClient
         $port,
         $identityfile,
         $advancedEntries = []
-    )
-    {
+    ) {
         return (new Host(
             $name, $host, $user, $port, $identityfile, $advancedEntries
         ))->saveToConfigFile();
