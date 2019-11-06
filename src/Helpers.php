@@ -8,6 +8,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class Helpers
 {
+    const DEFAULT_SSH_USER = 'root';
+
+    const DEFAULT_SSH_PORT = 22;
+
+    const DEFAULT_IDENTITY_FILE = '~/.ssh/id_rsa';
+
+    const DEFAULT_SSH_PROTOCOL = 1;
+
+    const DEFAULT_SERVER_ALIVE_INTERVAL = 60;
+
+    const DEFAULT_SERVER_ALIVE_COUNT_MAX = 10;
+
     /**
      * Display a danger message and exit.
      *
@@ -240,12 +252,18 @@ class Helpers
     }
 
     /**
-     * Get the default SSH user.
+     * Get the host advanced entries.
      *
-     * @return string
+     * @return array
      */
-    public static function defaultSSHUser()
+    public static function hostAdvancedEntries()
     {
-        return get_current_user();
+        return [
+            'ProxyCommand',
+            'LocalForward',
+            'Protocol',
+            'ServerAliveInterval',
+            'ServerAliveCountMax'
+        ];
     }
 }

@@ -3,7 +3,6 @@
 namespace Cuonggt\Zzh\Commands;
 
 use Cuonggt\Zzh\Helpers;
-use Cuonggt\Zzh\Models\Host;
 use Symfony\Component\Console\Input\InputArgument;
 
 class HostDeleteCommand extends Command
@@ -28,9 +27,7 @@ class HostDeleteCommand extends Command
      */
     public function handle()
     {
-        $host = new Host($this->argument('host'));
-
-        if (! $host->exists()) {
+        if (! Helpers::hostFileExists($name = $this->argument('host'))) {
             Helpers::abort('Unable to find a host with that name.');
         }
 
@@ -38,7 +35,7 @@ class HostDeleteCommand extends Command
             Helpers::abort('Action cancelled.');
         }
 
-        $host->delete();
+        $this->zzh->deleteHost($name);
 
         Helpers::info('Host deleted successfully.');
     }

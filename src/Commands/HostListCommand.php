@@ -3,7 +3,6 @@
 namespace Cuonggt\Zzh\Commands;
 
 use Cuonggt\Zzh\Helpers;
-use Cuonggt\Zzh\Models\Host;
 
 class HostListCommand extends Command
 {
@@ -26,7 +25,7 @@ class HostListCommand extends Command
      */
     public function handle()
     {
-        $hosts = Host::all();
+        $hosts = $this->zzh->hosts();
 
         if ($hosts->isEmpty()) {
             Helpers::comment('The hosts list is empty. Please use command <info>zzh host:add <host></info> to add a new host.');
@@ -38,7 +37,7 @@ class HostListCommand extends Command
             'User',
             'Port',
             'Identity File',
-        ], $hosts->map(function ($host) {
+        ], $hosts->sortBy->name->map(function ($host) {
             return [
                 $host->name,
                 $host->host,
@@ -46,6 +45,6 @@ class HostListCommand extends Command
                 $host->port,
                 $host->identityfile,
             ];
-        })->toArray());
+        })->all());
     }
 }

@@ -3,7 +3,6 @@
 namespace Cuonggt\Zzh\Commands;
 
 use Cuonggt\Zzh\Helpers;
-use Cuonggt\Zzh\Models\Host;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -33,14 +32,10 @@ class HostConnectCommand extends Command
             Helpers::abort('You need a TTY supported terminal to connect to a host.');
         }
 
-        $host = Host::loadFromConfigFile($this->argument('host'));
-
-        if (! $host) {
+        if (! Helpers::hostFileExists($name = $this->argument('host'))) {
             Helpers::abort('Unable to find a host with that name.');
         }
 
-        $process = new Process($host->connectCommand());
-
-        $process->setTimeout(null)->setTty(true)->run();
+        $this->zzh->connectHost($name);
     }
 }

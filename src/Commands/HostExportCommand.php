@@ -3,7 +3,6 @@
 namespace Cuonggt\Zzh\Commands;
 
 use Cuonggt\Zzh\Helpers;
-use Cuonggt\Zzh\Models\Host;
 
 class HostExportCommand extends Command
 {
@@ -26,7 +25,7 @@ class HostExportCommand extends Command
      */
     public function handle()
     {
-        $hosts = Host::all();
+        $hosts = $this->zzh->hosts();
 
         if ($hosts->isEmpty()) {
             Helpers::abort('The hosts list is empty. Please use command <info>zzh host:add <host></info> to add a new host.');
@@ -59,7 +58,7 @@ class HostExportCommand extends Command
             fwrite($fp, '  Port '.$host->port.PHP_EOL);
             fwrite($fp, '  IdentityFile '.$host->identityfile.PHP_EOL);
 
-            foreach ($host->advancedEntries as $advancedEntry) {
+            foreach (Helpers::hostAdvancedEntries() as $advancedEntry) {
                 if (! empty($host->{$advancedEntry})) {
                     fwrite($fp, '  '.$advancedEntry.' '.$host->{$advancedEntry}.PHP_EOL);
                 }

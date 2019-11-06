@@ -6,20 +6,40 @@ use Cuonggt\Zzh\Helpers;
 
 class Host
 {
-    const DEFAULT_SSH_PORT = 22;
-
-    const DEFAULT_IDENTITY_FILE = '~/.ssh/id_rsa.pub';
-
-    const DEFAULT_SERVER_ALIVE_INTERVAL = 60;
-
-    const DEFAULT_SERVER_ALIVE_COUNT_MAX = 10;
-
     /**
      * The host name.
      *
      * @var string
      */
     public $name;
+
+    /**
+     * The host address.
+     *
+     * @var string
+     */
+    public $host;
+
+    /**
+     * The host user.
+     *
+     * @var string
+     */
+    public $user;
+
+    /**
+     * The host port.
+     *
+     * @var string
+     */
+    public $port;
+
+    /**
+     * The host identity file.
+     *
+     * @var string
+     */
+    public $identityfile;
 
     /**
      * The host's allow entries.
@@ -38,30 +58,27 @@ class Host
         'ServerAliveCountMax',
     ];
 
-    public $advancedEntries = [
-        'ProxyCommand',
-        'LocalForward',
-        'Protocol',
-        'ServerAliveInterval',
-        'ServerAliveCountMax',
-    ];
-
     /**
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct(
+        $name,
+        $host,
+        $user,
+        $port,
+        $identityfile,
+        $advancedEntries = []
+    )
     {
         $this->name = $name;
-    }
+        $this->host = $host;
+        $this->user = $user;
+        $this->port = $port;
+        $this->identityfile = $identityfile;
 
-    /**
-     * Determine if a host config file exists.
-     *
-     * @return bool
-     */
-    public function exists()
-    {
-        return file_exists(Helpers::hostFilePath($this->name));
+        foreach ($advancedEntries as $k => $v) {
+            $this->{$k} = $v;
+        }
     }
 
     /**
@@ -89,25 +106,22 @@ class Host
      */
     public static function loadFromConfigFile($name)
     {
-        $host = new static($name);
+        $config = parse_ini_file(Helpers::hostFilePath($name));
 
-        if (! $host->exists()) {
-            return false;
-        }
-
-        $config = parse_ini_file(Helpers::hostFilePath($host->name));
-
-        return $host->map([
-            'host' => $config['host'] ?? $host->name,
-            'user' => $config['user'] ?? Helpers::defaultSSHUser(),
-            'port' => $config['port'] ?? self::DEFAULT_SSH_PORT,
-            'identityfile' => $config['identityfile'] ?? self::DEFAULT_IDENTITY_FILE,
-            'ProxyCommand' => isset($config['ProxyCommand']) ? $config['ProxyCommand'] : false,
-            'LocalForward' => isset($config['LocalForward']) ? $config['LocalForward'] : false,
-            'Protocol' => isset($config['Protocol']) ? $config['Protocol'] : false,
-            'ServerAliveInterval' => isset($config['ServerAliveInterval']) ? $config['ServerAliveInterval'] : false,
-            'ServerAliveCountMax' => isset($config['ServerAliveCountMax']) ? $config['ServerAliveCountMax'] : false,
-        ]);
+        return new static(
+            $name,
+            $config['host'] ?? $name,
+            $config['user'] ?? Helpers::DEFAULT_SSH_USER,
+            $config['port'] ?? Helpers::DEFAULT_SSH_PORT,
+            $config['identityfile'] ?? Helpers::DEFAULT_IDENTITY_FILE,
+            [
+                'ProxyCommand' => $config['ProxyCommand'] ?? false,
+                'LocalForward' => $config['LocalForward'] ?? false,
+                'Protocol' => $config['Protocol'] ?? false,
+                'ServerAliveInterval' => $config['ServerAliveInterval'] ?? false,
+                'ServerAliveCountMax' => $config['ServerAliveCountMax'] ?? false,
+            ]
+        );
     }
 
     /**
@@ -131,16 +145,6 @@ class Host
     }
 
     /**
-     * Delete the host.
-     *
-     * @return void
-     */
-    public function delete()
-    {
-        @unlink(Helpers::hostFilePath($this->name));
-    }
-
-    /**
      * Genrate the SSH connect command.
      *
      * @return string
@@ -158,17 +162,5 @@ class Host
         }
 
         return $command.' '.$this->user.'@'.$this->host;
-    }
-
-    /**
-     * Get all of the hosts.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public static function all()
-    {
-        return collect(glob(Helpers::hostsPath().'/*'))->map(function ($filename) {
-            return static::loadFromConfigFile(basename($filename));
-        });
     }
 }

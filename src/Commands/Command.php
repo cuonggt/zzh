@@ -2,13 +2,22 @@
 
 namespace Cuonggt\Zzh\Commands;
 
+use DateTime;
 use Cuonggt\Zzh\Helpers;
+use Cuonggt\Zzh\ConsoleZzhClient;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class Command extends SymfonyCommand
 {
+    /**
+     * The Zzh client instance.
+     *
+     * @var \Cuonggt\Zzh\ConsoleZzhClient
+     */
+    public $zzh;
+
     /**
      * The input implementation.
      *
@@ -24,6 +33,20 @@ class Command extends SymfonyCommand
     public $output;
 
     /**
+     * The DateTime representing the time the command started.
+     *
+     * @var \DateTime
+     */
+    protected $startedAt;
+
+    /**
+     * The number of rows in the last refreshed table.
+     *
+     * @var int
+     */
+    public $rowCount = 0;
+
+    /**
      * Execute the command.
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
@@ -32,6 +55,10 @@ class Command extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->startedAt = new DateTime;
+
+        $this->zzh = Helpers::app(ConsoleZzhClient::class);
+
         Helpers::app()->instance('input', $this->input = $input);
         Helpers::app()->instance('output', $this->output = $output);
 

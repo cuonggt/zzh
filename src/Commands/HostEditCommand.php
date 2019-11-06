@@ -28,24 +28,24 @@ class HostEditCommand extends Command
      */
     public function handle()
     {
-        $host = Host::loadFromConfigFile($this->argument('host'));
-
-        if (! $host) {
+        if (! Helpers::hostFileExists($name = $this->argument('host'))) {
             Helpers::abort('Unable to find a host with that name.');
         }
 
-        $host->map([
+        $host = Host::loadFromConfigFile($name);
+
+        $entries = [
             'host' => Helpers::ask('Host', $host->host),
             'user' => Helpers::ask('User', $host->user),
             'port' => Helpers::ask('Port', $host->port),
             'identityfile' => Helpers::ask('Identity File', $host->identityfile),
-        ]);
+        ];
 
         if (! Helpers::confirm('Are you sure you want to update this host', false)) {
             Helpers::abort('Action cancelled.');
         }
 
-        $host->saveToConfigFile();
+        $this->zzh->updateHost($host, $entries);
 
         Helpers::info('Host updated successfully.');
     }
