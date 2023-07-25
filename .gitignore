@@ -1,0 +1,15 @@
+/zzh
+/dist
+/.goreleaser.generated.yml
+
+# VS Code
+.vscode
+
+# IntelliJ
+.idea
+
+# macOS
+.DS_Store
+
+# vim
+*.swp
