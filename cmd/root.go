@@ -141,7 +141,9 @@ var rootCmd = &cobra.Command{
 			return
 		}
 
-		s.selected.connectWithSSH()
+		if err := s.selected.ConnectWithSSH(); err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 

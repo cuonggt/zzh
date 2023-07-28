@@ -16,7 +16,7 @@ type Server struct {
 	UpdatedAt time.Time
 }
 
-func (s *Server) connectWithSSH() error {
+func (s *Server) ConnectWithSSH() error {
 	ssh := exec.Command("ssh", fmt.Sprintf("%s@%s", s.User, s.Address))
 
 	ssh.Stdin = os.Stdin
