@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/spf13/cobra"
 )
 
@@ -96,8 +96,12 @@ func (s *Selector) View() string {
 	return s.list.View()
 }
 
-func NewSelector() *Selector {
+func NewSelector(servers []Server) *Selector {
 	items := []list.Item{}
+	for _, server := range servers {
+		items = append(items, Item{server: server})
+	}
+
 	const defaultWidth = 20
 
 	l := list.New(items, &ItemDelegate{}, defaultWidth, listHeight)
@@ -111,28 +115,33 @@ var rootCmd = &cobra.Command{
 	Use:   "zzh",
 	Short: "SSH client and connection manager in your favorite terminal.",
 	Run: func(cmd *cobra.Command, args []string) {
-		s := NewSelector()
+		db, err := InitDB()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-		_, err := tea.NewProgram(s).Run()
+		servers := []Server{}
+		result := db.Find(&servers)
+		if result.Error != nil {
+			fmt.Println(result.Error)
+			return
+		}
+
+		s := NewSelector(servers)
+
+		_, err = tea.NewProgram(s).Run()
 
 		if err != nil {
-			fmt.Println("Error running program:", err)
-			os.Exit(1)
+			fmt.Println(err)
+			return
 		}
 
 		if s.selected == nil {
 			return
 		}
 
-		ssh := exec.Command("ssh", fmt.Sprintf("%s@%s", s.selected.User, s.selected.Address))
-
-		ssh.Stdin = os.Stdin
-		ssh.Stderr = os.Stderr
-		ssh.Stdout = os.Stdout
-
-		if err := ssh.Run(); err != nil {
-			fmt.Println(err)
-		}
+		s.selected.connectWithSSH()
 	},
 }
 
