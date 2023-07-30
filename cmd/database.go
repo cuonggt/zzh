@@ -6,7 +6,11 @@ import (
 )
 
 func InitDB() (*gorm.DB, error) {
-	// fmt.Println(os.UserConfigDir())
+	// userConfigDir, err := os.UserConfigDir()
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	db, err := gorm.Open(sqlite.Open("file:zzh.db?cache=shared"), &gorm.Config{})
 	if err != nil {
 		return nil, err

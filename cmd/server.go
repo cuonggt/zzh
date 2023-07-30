@@ -8,12 +8,14 @@ import (
 )
 
 type Server struct {
-	ID        uint
-	Name      string
-	Address   string
-	User      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID           uint
+	Name         string
+	Address      string
+	User         string
+	Port         uint
+	IdentityFile string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 func (s *Server) ConnectWithSSH() error {

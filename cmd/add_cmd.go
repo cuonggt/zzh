@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
@@ -28,7 +30,6 @@ var addCmd = &cobra.Command{
 		}
 
 		name, err := namePrompt.Run()
-
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -45,7 +46,6 @@ var addCmd = &cobra.Command{
 		}
 
 		address, err := addressPrompt.Run()
-
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -62,16 +62,67 @@ var addCmd = &cobra.Command{
 		}
 
 		user, err := userPrompt.Run()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
+		portPrompt := promptui.Prompt{
+			Label:   "Port",
+			Default: "22",
+			Validate: func(s string) error {
+				if len(s) == 0 {
+					return fmt.Errorf("required")
+				}
+				_, err := strconv.Atoi(s)
+				if err != nil {
+					return fmt.Errorf("must be integer")
+				}
+				return nil
+			},
+		}
+
+		portString, err := portPrompt.Run()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		port, err := strconv.Atoi(portString)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		userHomeDir, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		identityFilePrompt := promptui.Prompt{
+			Label:   "Identity File",
+			Default: userHomeDir + "/.ssh/id_rsa",
+			Validate: func(s string) error {
+				if len(s) == 0 {
+					return fmt.Errorf("required")
+				}
+				return nil
+			},
+		}
+
+		identityFile, err := identityFilePrompt.Run()
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
 		server := Server{
-			Name:    name,
-			Address: address,
-			User:    user,
+			Name:         name,
+			Address:      address,
+			User:         user,
+			Port:         uint(port),
+			IdentityFile: identityFile,
 		}
 
 		result := db.Create(&server)
