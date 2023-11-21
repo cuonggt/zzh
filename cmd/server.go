@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"time"
 )
 
@@ -19,7 +20,7 @@ type Server struct {
 }
 
 func (s *Server) ConnectWithSSH() error {
-	ssh := exec.Command("ssh", fmt.Sprintf("%s@%s", s.User, s.Address))
+	ssh := exec.Command("ssh", fmt.Sprintf("%s@%s", s.User, s.Address), "-p", strconv.Itoa(int(s.Port)), "-i", s.IdentityFile)
 
 	ssh.Stdin = os.Stdin
 	ssh.Stderr = os.Stderr
