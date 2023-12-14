@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/manifoldco/promptui"
+	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
 
@@ -25,18 +25,22 @@ var removeCmd = &cobra.Command{
 			return
 		}
 
-		confirmPrompt := promptui.Prompt{
-			Label:     "Remove Server",
-			Default:   "n",
-			IsConfirm: true,
-		}
+		var confirm bool = false
 
-		confirm, err := confirmPrompt.Run()
+		form := huh.NewForm(
+			huh.NewGroup(
+				huh.NewConfirm().
+					Title("Are you sure you would like to remove this server?").
+					Value(&confirm),
+			),
+		)
+
+		err = form.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		if confirm != "y" {
+		if !confirm {
 			return
 		}
 
